@@ -42,6 +42,7 @@ def build_student_balance(student, session):
         items.append({
             "fee": fee.id,
             "name": fee.name,
+            "term": fee.term,
             "amount": fee.amount,
             "paid": paid,
             "balance": fee.amount - paid,

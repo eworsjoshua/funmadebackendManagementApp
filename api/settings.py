@@ -13,6 +13,7 @@
 from pathlib import Path
 from datetime import timedelta
 import os
+from urllib.parse import urlparse
 
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
@@ -216,4 +217,8 @@ SIMPLE_JWT = {
 }
 
 PAYSTACK_SECRET_KEY = os.environ.get("PAYSTACK_SECRET_KEY", "")
-PAYSTACK_CALLBACK_URL = os.environ.get("PAYSTACK_CALLBACK_URL", "http://localhost:3000/payment/callback")
+PAYSTACK_CALLBACK_URL = os.environ.get("PAYSTACK_CALLBACK_URL", "").strip()
+if not PAYSTACK_CALLBACK_URL or (
+    not DEBUG and urlparse(PAYSTACK_CALLBACK_URL).hostname in {"localhost", "127.0.0.1"}
+):
+    PAYSTACK_CALLBACK_URL = "https://funmadecollege.netlify.app/payment/callback"
